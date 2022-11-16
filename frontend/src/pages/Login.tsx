@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaSignInAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { Typography, Stack, Box, TextField, Button } from '@mui/material';
+import {useAppSelector, useAppDispatch} from '../hooks';
+import {login} from '../redux/features/authSlice';
 
 interface loginUser {
     email: string,
@@ -9,12 +11,14 @@ interface loginUser {
 }
 
 const Login = () => {
+    const dispatch = useAppDispatch();
     const [formData, setFormData] = useState<loginUser>({
         email: '',
         password: ''
     });
 
     const { email, password } = formData;
+    const userLogined = useAppSelector((state) => state.auth)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(
@@ -28,6 +32,11 @@ const Login = () => {
 
     const onSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
+        const userData = {
+            email, 
+            password
+        }
+        dispatch(login(userData))
 
         toast.success('login success');
     }

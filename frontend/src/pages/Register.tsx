@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { Typography, Stack, Box, TextField, Button } from '@mui/material';
+import {useAppSelector, useAppDispatch} from '../hooks';
+import {register} from '../redux/features/authSlice';
 
 interface registerUser {
     name: string,
@@ -11,6 +13,8 @@ interface registerUser {
 }
 
 const Register = () => {
+    const dispatch = useAppDispatch();
+
     const [formData, setFormData] = useState<registerUser>({
         name: '',
         email: '',
@@ -19,6 +23,8 @@ const Register = () => {
     });
 
     const { name, email, password, password2 } = formData;
+
+    const userLogined = useAppSelector((state) => state.auth)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(
@@ -35,6 +41,14 @@ const Register = () => {
 
         if (password !== password2) {
             toast.error('Passwords do not match!');
+        } else {
+            const userData = {
+                name,
+                email,
+                password
+            }
+
+            dispatch(register(userData));
         }
     }
 
@@ -57,7 +71,7 @@ const Register = () => {
                         fontWeight: '600'
                     }}
                 >
-                    Please create an account
+                    Please create an account {userLogined ?  'adf' : '123'}
                 </Typography>
             </Stack>
 
