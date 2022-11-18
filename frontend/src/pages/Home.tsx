@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
-import { FaQuestionCircle, FaTicketAlt } from 'react-icons/fa';
-import { Stack, Typography, Link as LinkMUI } from '@mui/material';
+import {Link} from 'react-router-dom';
+import {FaQuestionCircle, FaTicketAlt} from 'react-icons/fa';
+import {Stack, Typography, Link as LinkMUI} from '@mui/material';
 
 const Home = () => {
     return (
@@ -39,11 +39,11 @@ const Home = () => {
                 >
                     <LinkMUI
                         component={Link}
-                        to='/new-ticket'
+                        to='/category-list'
                         underline='none'
                         variant='h6'
                         color='black'
-                        sx={{ 
+                        sx={{
                             width: '100%',
                             background: 'white',
                             border: '2px solid black',
@@ -56,16 +56,16 @@ const Home = () => {
                             gap: '5px'
                         }}
                     >
-                        <FaQuestionCircle /> Create new ticket
+                        <FaQuestionCircle/> View all categories
                     </LinkMUI>
 
                     <LinkMUI
                         component={Link}
-                        to='/tickets'
+                        to='/product-list'
                         underline='none'
                         variant='h6'
                         color='white'
-                        sx={{ 
+                        sx={{
                             width: '100%',
                             background: 'black',
                             border: '2px solid black',
@@ -78,7 +78,7 @@ const Home = () => {
                             gap: '5px'
                         }}
                     >
-                        <FaTicketAlt /> View my tickets
+                        <FaTicketAlt/> View all products
                     </LinkMUI>
                 </Stack>
             </Stack>

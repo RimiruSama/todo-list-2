@@ -1,8 +1,20 @@
 import axios from 'axios';
 
-const API_URL = '/api/users';
+const API_URL = 'https://fakestoreapi.com/users';
 
 // Register user
 const register = async (userData: object) => {
-    const response = await axios.post(API_URL, userData);
+    const response = await axios.post(API_URL, JSON.stringify(userData));
+
+    if(response.data) {
+        localStorage.setItem('user', JSON.stringify(response.data));
+    }
+
+    return response.data
 }
+
+const authService = {
+    register
+}
+
+export default authService;

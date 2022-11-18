@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { Typography, Stack, Box, TextField, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../hooks';
-import {register} from '../redux/features/authSlice';
+import {register, reset} from '../redux/features/authSlice';
 
 interface registerUser {
     name: string,
@@ -14,6 +15,7 @@ interface registerUser {
 
 const Register = () => {
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState<registerUser>({
         name: '',
@@ -24,7 +26,7 @@ const Register = () => {
 
     const { name, email, password, password2 } = formData;
 
-    const userLogined = useAppSelector((state) => state.auth)
+    const {user, isSuccess, isError, isLoading, message} = useAppSelector((state) => state.auth)
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData(
@@ -52,6 +54,19 @@ const Register = () => {
         }
     }
 
+    useEffect(() => {
+        if(isError) {
+            toast.error(message)
+        }
+
+        // Redirect when logged in
+        if(isSuccess || user) {
+            navigate('/');
+        } 
+
+        dispatch(reset());
+    }, [isError, isSuccess, user, message]);
+
     return (
         <>
             <Stack
@@ -71,7 +86,7 @@ const Register = () => {
                         fontWeight: '600'
                     }}
                 >
-                    Please create an account {userLogined ?  'adf' : '123'}
+                    Please create an account {name ?  'adf' : '123'}
                 </Typography>
             </Stack>
 
