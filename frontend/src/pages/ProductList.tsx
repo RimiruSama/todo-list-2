@@ -4,19 +4,32 @@ import {reset, getAllProducts, getProductByCategory} from '../redux/features/pro
 import {Stack, Card, CardContent, CardMedia, Typography} from "@mui/material";
 import {useSearchParams} from "react-router-dom";
 
+import {useQuery} from "react-query";
+import productService from '../redux/services/productService';
+
 const ProductList = () => {
-    const dispatch = useAppDispatch();
+    // const dispatch = useAppDispatch();
     let [searchParams, setSearchParams] = useSearchParams();
     let category = searchParams.get('category')
-    const {products} = useAppSelector((state) => state.product)
+    // const {products} = useAppSelector((state) => state.product)
 
-    useEffect(() => {
-        if (!category) {
-            dispatch(getAllProducts());
-        } else {
-            dispatch(getProductByCategory(category))
-        }
-    }, [category]);
+    // useEffect(() => {
+    //     if (!category) {
+    //         dispatch(getAllProducts());
+    //     } else {
+    //         dispatch(getProductByCategory(category))
+    //     }
+    // }, [category]);
+
+    const res: any = useQuery(['products'], productService.getAllProduct);
+
+    if (res.isLoading) {
+        return (<span>Loading...</span>)
+    }
+
+    if (res.isError) {
+        return (<span>Error: {res.error.message}</span>)
+    }
 
     return (
         <div>
@@ -30,7 +43,7 @@ const ProductList = () => {
                     gap: '20px'
                 }}
             >
-                {products.map((item: any, index: number) => {
+                {res.data.map((item: any, index: number) => {
                     return (
                         <Card sx={{maxWidth: 345}} key={index}>
                             <CardMedia
