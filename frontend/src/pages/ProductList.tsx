@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
-import {useAppSelector, useAppDispatch} from "../hooks";
-import {reset, getAllProducts, getProductByCategory} from '../redux/features/productSlice';
-import {Stack, Card, CardContent, CardMedia, Typography} from "@mui/material";
-import {useSearchParams} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useAppSelector, useAppDispatch } from "../hooks";
+import { reset, getAllProducts } from '../redux/features/productSlice';
+import { Stack, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
-import {useQuery} from "react-query";
+import { useQuery } from "react-query";
 import productService from '../redux/services/productService';
 
 const ProductList = () => {
@@ -21,7 +21,12 @@ const ProductList = () => {
     //     }
     // }, [category]);
 
-    const res: any = useQuery(['products'], productService.getAllProduct);
+    const res: any = useQuery(
+        ['products'],
+        () => productService.getAllProductRQ(category),
+        {
+            staleTime: 60000
+        });
 
     if (res.isLoading) {
         return (<span>Loading...</span>)
@@ -45,7 +50,7 @@ const ProductList = () => {
             >
                 {res.data.map((item: any, index: number) => {
                     return (
-                        <Card sx={{maxWidth: 345}} key={index}>
+                        <Card sx={{ maxWidth: 345 }} key={index}>
                             <CardMedia
                                 component="img"
                                 height="140"
