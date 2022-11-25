@@ -8,6 +8,8 @@ import Register from './pages/Register';
 import ProductList from './pages/ProductList';
 import Container from '@mui/material/Container';
 import CategoryList from "./pages/CategoryList";
+import CategoryCreate from './pages/CategoryCreate';
+import ProductCreate from './pages/ProductCreate';
 
 function App() {
     return (
@@ -26,6 +28,8 @@ function App() {
                         <Route path='/register' element={<Register/>}/>
                         <Route path='/product-list' element={<ProductList/>}/>
                         <Route path='/category-list' element={<CategoryList/>}/>
+                        <Route path='/category-create' element={<CategoryCreate />}/>
+                        <Route path='/product-create' element={<ProductCreate />} />
                     </Routes>
                 </Container>
             </Router>

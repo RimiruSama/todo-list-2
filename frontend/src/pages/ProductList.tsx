@@ -1,32 +1,21 @@
 import { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { reset, getAllProducts } from '../redux/features/productSlice';
-import { Stack, Card, CardContent, CardMedia, Typography } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
+import { Stack, Card, CardContent, CardMedia, Typography, Box, Button, CardActions } from "@mui/material";
+import { useSearchParams, useNavigate } from "react-router-dom";
 
 import { useQuery } from "react-query";
 import productService from '../redux/services/productService';
 
 const ProductList = () => {
-    // const dispatch = useAppDispatch();
     let [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     let category = searchParams.get('category')
-    // const {products} = useAppSelector((state) => state.product)
-
-    // useEffect(() => {
-    //     if (!category) {
-    //         dispatch(getAllProducts());
-    //     } else {
-    //         dispatch(getProductByCategory(category))
-    //     }
-    // }, [category]);
 
     const res: any = useQuery(
-        ['products'],
-        () => productService.getAllProductRQ(category),
-        {
-            staleTime: 60000
-        });
+        ['products', category],
+        () => productService.getAllProductRQ(category)
+    );
 
     if (res.isLoading) {
         return (<span>Loading...</span>)
@@ -36,8 +25,25 @@ const ProductList = () => {
         return (<span>Error: {res.error.message}</span>)
     }
 
+    const handleCreateProdClick = () => {
+        navigate('/product-create');
+    }
+
     return (
         <div>
+            <Box
+                sx={{ 
+                    display: 'flex',
+                    justifyContent: 'flex-end'
+                }}
+            >
+                <Button
+                    variant="outlined"
+                    onClick={handleCreateProdClick}
+                >
+                    Create Product
+                </Button>
+            </Box>
             <h1>{category ? category : 'Product List'}</h1>
             <Stack
                 direction={'row'}
@@ -59,12 +65,20 @@ const ProductList = () => {
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    {item.title}
+                                    {item.name}
                                 </Typography>
                                 <Typography variant="body2" color="text.secondary">
                                     {item.description}
                                 </Typography>
                             </CardContent>
+                            <CardActions 
+                                sx={{ 
+                                    justifyContent: 'space-between'
+                                }}
+                            >
+                                <Button sx={{ width: "50%" }} size="small" color='secondary'>Edit</Button>
+                                <Button sx={{ width: "50%" }} size="small" color='error'>Delete</Button>
+                            </CardActions>
                         </Card>
                     );
                 })}

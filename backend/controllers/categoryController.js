@@ -11,9 +11,8 @@ const getAllCategories = async (req, res) => {
 
 const addCategory = async (req, res) => {
     try {
-        const {name} = req.body;
-        const category = await new Category({name}).save();
-        return res.json({category});
+        const category = await new Category(req.body).save();
+        return res.json({_id: category._id.toString(), name: category.name, status: category.status});
     } catch (error) {
         return res.status(500).json({message: error.message});
     }

@@ -14,9 +14,7 @@ const CategoryList = () => {
     //     dispatch(getAllCategories());
     // }, []);
 
-    const res: any = useQuery(['categories'], productService.getAllCategories, {
-        staleTime: 60000
-    });
+    const res: any = useQuery('categories', productService.getAllCategories);
 
     if (res.isLoading || res.isFetching) {
         return (<span>Loading...</span>)
@@ -25,7 +23,7 @@ const CategoryList = () => {
     if (res.isError) {
         return (<span>Error: {res.error.message}</span>)
     }
-
+    
     return (
         <div>
             <h1>Categories</h1>
@@ -39,11 +37,11 @@ const CategoryList = () => {
             <Stack
                 direction='row'
                 alignItems='flex-start'
-                justifyContent='space-between'
+                justifyContent='center'
                 sx={{
                     paddingTop: '1rem',
                     flexWrap: 'wrap',
-                    gap: '20px'
+                    gap: '20px',
                 }}
             >
                 {res?.data.map((item: any, index: number) => {
@@ -51,9 +49,12 @@ const CategoryList = () => {
                         <Button
                             key={index}
                             component={Link}
-                            to={`/product-list?category=${item}`}
+                            to={`/product-list?category=${item.name}`}
+                            sx={{ 
+                                width: '24.5%'
+                            }}
                         >
-                            {item}
+                            {item.name}
                         </Button>
                     );
                 })}

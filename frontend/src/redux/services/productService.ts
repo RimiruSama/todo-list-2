@@ -3,14 +3,13 @@ import axios from 'axios';
 const getAllProduct = async () => {
     console.log('call api product');
     const response = await axios.get('https://fakestoreapi.com/products');
-    console.log(response);
     return response.data;
 }
 
 const getAllCategories = async () => {
     console.log('call api category');
-    // const response = await axios.get('http://localhost:5000/api/category/getAll');
-    const response = await axios.get('https://fakestoreapi.com/products/categories');
+    const response = await axios.get('http://localhost:5000/api/category/getAll');
+    // const response = await axios.get('https://fakestoreapi.com/products/categories');
     return response.data;
 }
 
@@ -20,20 +19,26 @@ const getProductByCategory = async (category: string) => {
     return response.data;
 }
 
-const createCategory = async () => {
-    const response = await axios.post('http://localhost:5000/api/category/create');
+const createCategory = async (data: any) => {
+    console.log("create category");
+    
+    const response = await axios.post('http://localhost:5000/api/category/create', data);
+    return response.data;
+}
+
+const createProduct = async (data:any) => {
+    console.log("create product");
+    const response = await axios.post('http://localhost:5000/api/product/create', data);
     return response.data;
 }
 
 const getAllProductRQ = async (cate: any) => {
     console.log('call api product');
     if(cate) {
-        const response = await axios.get(`https://fakestoreapi.com/products/category/${cate}`);
-        console.log(response);
-        
+        const response = await axios.get(`http://localhost:5000/api/product/${cate}`);
         return response.data;
     }else {
-        const response = await axios.get('https://fakestoreapi.com/products');
+        const response = await axios.get('http://localhost:5000/api/product/getAll');
         return response.data;
     }
     return [];
@@ -43,7 +48,9 @@ const productService = {
     getAllProduct,
     getAllCategories,
     getProductByCategory,
-    getAllProductRQ
+    getAllProductRQ,
+    createCategory,
+    createProduct
 }
 
 export default productService;
